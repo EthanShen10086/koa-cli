@@ -82,10 +82,11 @@ module.exports = {
 			'error',
 			{
 				version: '>=14.0.0',
-				ignores: ['modules'],
+				ignores: ['modules', 'dynamicImport'],
 			},
 		],
 		'node/no-missing-require': 'error',
 		'node/no-deprecated-api': 'error',
+		'@typescript-eslint/no-require-imports': 'off',
 	},
 };
