@@ -1,0 +1,9 @@
+{
+  "semi": true,
+  "singleQuote": true,
+  "useTabs": true,
+  "bracketSpacing": true,
+  "indent": [0, 2],
+  "no-const-assign": 2,
+  "endOfLine": "auto"
+}

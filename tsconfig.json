@@ -1,0 +1,12 @@
+{
+	"compilerOptions": {
+		// 使用较新版本支持空值合并这些
+		"lib": ["es2021", "esnext"],
+		"target": "es2021",
+		"moduleResolution": "node",
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"sourceMap": false
+	},
+	"exclude": ["node_modules", "dist"]
+}
