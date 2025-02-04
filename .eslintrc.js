@@ -9,11 +9,13 @@ module.exports = {
 		'eslint:recommended',
 		'eslint-config-prettier',
 		// Add Node.js specific rules
-		'plugin:node/recommended'
+		'plugin:node/recommended',
+		'plugin:@typescript-eslint/recommended', // 添加 TypeScript 支持
 	],
 	plugins: [
 		'prettier',
-		'node'
+		'node',
+		'@typescript-eslint', // 添加 TypeScript 插件
 	],
 	// Use @babel/eslint-parser directly instead of deprecated babel-eslint
 	parser: '@babel/eslint-parser',
@@ -62,7 +64,6 @@ module.exports = {
 		'no-proto': 2,
 		'no-self-compare': 2,
 		'no-shadow-restricted-names': 2,
-		'no-tabs': 2,
 		'no-template-curly-in-string': 2,
 		'no-throw-literal': 2,
 		'no-trailing-spaces': 2,
@@ -77,11 +78,14 @@ module.exports = {
 		'semi-spacing': 2,
 		'no-unexpected-multiline': 2,
 		// Add Node.js specific rules
-		'node/no-unsupported-features/es-syntax': ['error', {
-			version: '>=14.0.0',
-			ignores: ['modules']
-		}],
+		'node/no-unsupported-features/es-syntax': [
+			'error',
+			{
+				version: '>=14.0.0',
+				ignores: ['modules'],
+			},
+		],
 		'node/no-missing-require': 'error',
-		'node/no-deprecated-api': 'error'
+		'node/no-deprecated-api': 'error',
 	},
 };
