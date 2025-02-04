@@ -1,24 +1,38 @@
 {
-  "name": "koa-cli",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@babel/core": "^7.26.7",
-    "@babel/eslint-parser": "^7.26.5",
-    "@commitlint/cli": "^19.7.1",
-    "@commitlint/config-conventional": "^19.7.1",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-prettier": "^5.2.3",
-    "husky": "^9.1.7",
-    "prettier": "^3.4.2"
-  }
+	"name": "koa-cli",
+	"version": "1.0.0",
+	"description": "a koa node cli",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"prepare": "husky",
+		"postinstall": "sh -c \"mkdir -p .husky && echo '#!/bin/sh\\npnpm lint-staged' > .husky/pre-commit && echo '#!/bin/sh\\npnpm dlx commitlint --edit \"\\$1\"' > .husky/commit-msg && chmod +x .husky/pre-commit .husky/commit-msg\"",
+		"lint-staged": "lint-staged"
+	},
+	"keywords": [
+		"koa",
+		"cli",
+		"node"
+	],
+	"author": "yyh",
+	"license": "ISC",
+	"devDependencies": {
+		"@babel/core": "^7.26.7",
+		"@babel/eslint-parser": "^7.26.5",
+		"@commitlint/cli": "^19.7.1",
+		"@commitlint/config-conventional": "^19.7.1",
+		"eslint": "^8.57.0",
+		"eslint-config-prettier": "^9.1.0",
+		"eslint-plugin-node": "^11.1.0",
+		"eslint-plugin-prettier": "^5.2.3",
+		"husky": "^9.1.7",
+		"lint-staged": "^15.4.3",
+		"prettier": "^3.4.2"
+	},
+	"lint-staged": {
+		"*.{js,ts}": [
+			"eslint --fix",
+			"prettier --write"
+		]
+	}
 }
