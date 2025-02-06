@@ -1,6 +1,6 @@
 const ErrorCodeMap = require('../../common/constant/errorCode');
 const { LogInfo } = require('../../common/constant/logData');
-const BusinessError = require('../../common/exception/businessError');
+const BusinessError = require('../../common/exception/AppError');
 const CommonUtils = require('../../utils/index');
 const service = require('../../service/common/user.service');
 
