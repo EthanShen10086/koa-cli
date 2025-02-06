@@ -5,7 +5,8 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"server": "nodemon main.js",
+		"dev": "cross-env NODE_ENV=development nodemon main.js",
+		"prod": "cross-env NODE_ENV=production node main.js",
 		"prepare": "husky",
 		"postinstall": "node script/cross-platform-husky-setup.js",
 		"lint-staged": "lint-staged"
@@ -28,6 +29,7 @@
 		"@commitlint/config-conventional": "^19.7.1",
 		"@typescript-eslint/eslint-plugin": "^8.23.0",
 		"@typescript-eslint/parser": "^8.23.0",
+		"cross-env": "^7.0.3",
 		"eslint": "^8.57.0",
 		"eslint-config-prettier": "^9.1.0",
 		"eslint-plugin-node": "^11.1.0",
