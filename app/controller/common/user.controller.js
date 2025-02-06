@@ -9,7 +9,7 @@ const Logger = require('../../utils/Logger');
 class UserController extends BaseController {
 	constructor(ctx) {
 		super(ctx);
-		this.user = service;
+		this.userService = service;
 	}
 	async add(ctx) {
 		let objectName = [];

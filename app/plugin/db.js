@@ -1,16 +1,12 @@
 const mysql = require('mysql2');
-const path = require('path');
-const config = require(path.join(__dirname, '../../config/config.default'));
-const connection = mysql.createPool(config.mysql);
+const initConfig = require('../../config/config.default');
+const Logger = require('../utils/Logger');
+const defaultConfig = initConfig();
+const connection = mysql.createPool(defaultConfig.mysql);
 
 connection.getConnection((error, conn) => {
-	// TODO:修改返回信息 使用封装好的Logger
 	conn.connect((err) => {
-		if (err) {
-			console.log('连接数据库失败', err);
-		} else {
-			console.log('连接数据库成功');
-		}
+		Logger.handleError(err);
 	});
 });
 

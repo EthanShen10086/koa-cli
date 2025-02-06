@@ -1,6 +1,5 @@
-import { Base64 } from 'js-base64';
-import { JSON } from 'sequelize';
-import { v4 as uuidv4 } from 'uuid';
+const { Base64 } = require('js-base64');
+const { v4: uuidv4 } = require('uuid');
 
 class CommonUtils {
 	static isFileBase64(fileSrc) {
