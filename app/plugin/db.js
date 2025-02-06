@@ -6,7 +6,11 @@ const connection = mysql.createPool(defaultConfig.mysql);
 
 connection.getConnection((error, conn) => {
 	conn.connect((err) => {
-		Logger.handleError(err);
+		if (err) {
+			Logger.handleError(err);
+		} else {
+			Logger.info('database connect success');
+		}
 	});
 });
 
