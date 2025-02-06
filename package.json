@@ -6,7 +6,7 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"prepare": "husky",
-		"postinstall": "sh -c \"mkdir -p .husky && echo '#!/bin/sh\\npnpm lint-staged' > .husky/pre-commit && echo '#!/bin/sh\\npnpm dlx commitlint --edit \"\\$1\"' > .husky/commit-msg && chmod +x .husky/pre-commit .husky/commit-msg\"",
+		"postinstall": "shx mkdir -p .husky && shx echo '#!/bin/sh\\npnpm lint-staged' > .husky/pre-commit && shx echo '#!/bin/sh\\npnpm dlx commitlint --edit \"\\$1\"' > .husky/commit-msg && shx chmod +x .husky/pre-commit .husky/commit-msg",
 		"lint-staged": "lint-staged"
 	},
 	"keywords": [
@@ -33,7 +33,8 @@
 		"eslint-plugin-prettier": "^5.2.3",
 		"husky": "^9.1.7",
 		"lint-staged": "^15.4.3",
-		"prettier": "^3.4.2"
+		"prettier": "^3.4.2",
+		"shx": "^0.3.4"
 	},
 	"lint-staged": {
 		"*.{js,ts}": [
