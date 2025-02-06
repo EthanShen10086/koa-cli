@@ -46,6 +46,7 @@
 		"@koa/bodyparser": "^5.1.1",
 		"@koa/multer": "^3.0.2",
 		"@koa/router": "^13.1.0",
+		"crypto": "^1.0.1",
 		"dayjs": "^1.11.13",
 		"dotenv": "^16.4.7",
 		"js-base64": "^3.7.7",
