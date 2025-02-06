@@ -7,7 +7,7 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"server": "nodemon main.js",
 		"prepare": "husky",
-		"postinstall": "node script/cross-platform-husky-setup.js && chmod +x .husky/pre-commit .husky/commit-msg || true",
+		"postinstall": "node script/cross-platform-husky-setup.js",
 		"lint-staged": "lint-staged"
 	},
 	"keywords": [
