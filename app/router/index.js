@@ -20,7 +20,6 @@ function useRouteList(koaApp) {
 	try {
 		const routeFilePath = path.join(__dirname, '../router');
 		const routeFileList = getRouterFiles(routeFilePath);
-		console.log(routeFileList, '== routeFiles');
 		routeFileList.forEach((file) => {
 			// require需顶层引入 除非动态引入文件
 			// eslint-disable-next-line global-require

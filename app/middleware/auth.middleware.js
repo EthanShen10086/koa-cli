@@ -1,9 +1,9 @@
-class AuthMiddleware {
-	// 验证token
-	async verifyToken(ctx, next) {
-		await next();
-	}
-	// 防盗链
-}
+// 验证token
+const verifyToken = async (ctx, next) => {
+	await next();
+};
+// 防盗链
 
-module.exports = new AuthMiddleware();
+module.exports = {
+	verifyToken,
+};
