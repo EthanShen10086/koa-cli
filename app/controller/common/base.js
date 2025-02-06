@@ -111,6 +111,9 @@ class BaseController {
 	static handleError(error, ConstError = ErrorCodeMap.ERROR_0x0000) {
 		// 抛出错误
 		this.ctx.app.emit('error', error, this.ctx);
+		this.errorHandle(error, ConstError);
+	}
+	static errorHandle(error, ConstError) {
 		// Logger 错误
 		if (error instanceof BusinessError) {
 			Logger.error(error);
@@ -121,7 +124,6 @@ class BaseController {
 			}
 			Logger.error(error);
 		}
-
 		// 返回错误
 		this.error({ code: `${error.code}`, msg: `${error.message}` });
 	}

@@ -1,30 +1,35 @@
 const fs = require('fs');
 const path = require('path');
 
-if (process.env.NODE_ENV === 'production') {
-	Logger.setLevel('INFO');
-}
+const log4js = require('log4js');
+const log4jsConfig = require('../../log4js.config');
+
+log4js.configure(log4jsConfig);
 
 class Logger {
-	constructor(logDir = '../../logs') {
-		this.logDir = path.join(__dirname, logDir);
-		if (!fs.existsSync(this.logDir)) {
-			fs.mkdirSync(this.logDir);
+	static level = 'DEBUG';
+	static logDir = path.join(__dirname, '../../logs');
+	static initialize(logDir = '../../logs') {
+		const logDirectory = path.join(__dirname, logDir);
+		if (!fs.existsSync(logDirectory)) {
+			fs.mkdirSync(logDirectory);
+		}
+		if (process.env.NODE_ENV === 'production') {
+			Logger.setLevel('INFO');
 		}
 	}
-	static level = 'DEBUG';
 	static setLevel(newLevel) {
 		this.level = newLevel;
 	}
 	static shouldLog(level) {
 		const levelList = ['DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'];
-		return levelList.indexOf(level) >= this.level;
+		return levelList.indexOf(level) >= levelList.indexOf(this.level);
 	}
 	static log(level, message, error) {
 		if (!this.shouldLog(level)) {
 			return;
 		}
-		const timestamp = new Date().toIsoString();
+		const timestamp = new Date().toISOString();
 		const stack = error ? error.stack : '';
 		let formattedMessage = `[${timestamp}][${level.toUpperCase()}]${message}${stack}`;
 		// 格式化错误堆栈
@@ -62,7 +67,6 @@ class Logger {
 			.map((line) => `    at ${line}`)
 			.join('\n');
 	}
-	// 以error为例
 	static error(message, error) {
 		this.log('ERROR', message, error);
 	}
@@ -73,4 +77,6 @@ class Logger {
 		fs.appendFileSync(path.join(this.logDir, 'app.log'), formattedMessage);
 	}
 }
+
+Logger.initialize();
 module.exports = Logger;

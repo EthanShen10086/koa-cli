@@ -50,8 +50,7 @@ class StaticMiddleware {
 				}
 			}
 		} catch (err) {
-			// 这里不是业务逻辑 所以用通用的错误处理去承接
-			return ctx.app.emit('error', err, ctx);
+			this.handleError(err);
 		} finally {
 			let log = {
 				module: LogInfo.MODULE_STATIC,
