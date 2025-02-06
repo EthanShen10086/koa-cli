@@ -5,8 +5,9 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
+		"server": "nodemon main.js",
 		"prepare": "husky",
-		"postinstall": "sh -c \"mkdir -p .husky && echo '#!/bin/sh\\npnpm lint-staged' > .husky/pre-commit && echo '#!/bin/sh\\npnpm dlx commitlint --edit \"\\$1\"' > .husky/commit-msg && chmod +x .husky/pre-commit .husky/commit-msg\"",
+		"postinstall": "node script/cross-platform-husky-setup.js && chmod +x .husky/pre-commit .husky/commit-msg || true",
 		"lint-staged": "lint-staged"
 	},
 	"keywords": [
