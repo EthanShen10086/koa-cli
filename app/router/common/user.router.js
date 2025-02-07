@@ -6,5 +6,5 @@ const userRouter = new Router({
 });
 
 userRouter.post('/add', userController.add);
-
+userRouter.get('/list', userController.list);
 module.exports = userRouter;
