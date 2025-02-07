@@ -53,6 +53,11 @@ class UserController extends BaseController {
 			actionDetail = null;
 		}
 	}
+	async list(ctx) {
+		console.log('进来了吗');
+		ctx.status = 200;
+		ctx.body = '请求成功';
+	}
 }
 
 module.exports = new UserController();
