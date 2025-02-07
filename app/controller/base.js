@@ -1,8 +1,8 @@
-const ErrorCodeMap = require('../../common/constant/errorCode');
-const BusinessError = require('../../common/exception/AppError');
+const ErrorCodeMap = require('../common/constant/errorCode');
+const BusinessError = require('../common/exception/AppError');
 
-const Logger = require('../../utils/Logger');
-const CommonUtils = require('../../utils/index');
+const Logger = require('../utils/Logger');
+const CommonUtils = require('../utils/index');
 class BaseController {
 	// 取登录用户对象
 	get user() {

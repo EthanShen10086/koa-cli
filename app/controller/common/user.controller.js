@@ -4,7 +4,7 @@ const BusinessError = require('../../common/exception/AppError');
 const CommonUtils = require('../../utils/index');
 const service = require('../../service/common/user.service');
 
-const BaseController = require('../common/base');
+const BaseController = require('../base');
 const Logger = require('../../utils/Logger');
 class UserController extends BaseController {
 	constructor(ctx) {
