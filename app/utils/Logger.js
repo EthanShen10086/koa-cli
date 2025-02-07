@@ -25,16 +25,24 @@ class Logger {
 		const levelList = ['DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'];
 		return levelList.indexOf(level) >= levelList.indexOf(this.level);
 	}
+	static formatStack(stack) {
+		if (!stack) return '';
+		// 格式化错误堆栈的逻辑
+		return stack
+			.split('\n')
+			.map((line) => `    at ${line}`)
+			.join('\n');
+	}
 	static log(level, message, error) {
 		if (!this.shouldLog(level)) {
 			return;
 		}
 		const timestamp = new Date().toISOString();
-		const stack = error ? error.stack : '';
-		let formattedMessage = `[${timestamp}][${level.toUpperCase()}]${message}${stack}`;
+		const stack = error ? `\nStack: ${error.stack}` : '';
+		let formattedMessage = `[${timestamp}][${level.toUpperCase()}]${message}${stack}\n`;
 		// 格式化错误堆栈
 		if (error) {
-			formattedMessage += `\n${this.formatStack(error.stack)}`;
+			formattedMessage += `\n${this.formatStack(error.stack)}\n`;
 		}
 		switch (level) {
 			case 'DEBUG':
@@ -59,20 +67,15 @@ class Logger {
 				console.log(formattedMessage);
 		}
 	}
-	static formatStack(stack) {
-		if (!stack) return '';
-		// 格式化错误堆栈的逻辑
-		return stack
-			.split('\n')
-			.map((line) => `    at ${line}`)
-			.join('\n');
-	}
+	// 开发的时候用
+	// 单独抽出来 只做 打印 不写入日志
 	static error(message, error) {
 		this.log('ERROR', message, error);
 	}
 	static info(message) {
 		this.log('INFO', message);
 	}
+	// 生产查看日志信息
 	static writeLog(formattedMessage) {
 		fs.appendFileSync(path.join(this.logDir, 'app.log'), formattedMessage);
 	}
