@@ -124,6 +124,7 @@ class BaseController {
 			}
 			Logger.error(error);
 		}
+		// TODO：封装 koa-json-error 避免将堆栈错误信息暴露给前端
 		// 返回错误
 		this.error({ code: `${error.code}`, msg: `${error.message}` });
 	}

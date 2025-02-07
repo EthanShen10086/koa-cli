@@ -4,7 +4,7 @@ const BusinessError = require('../../common/exception/AppError');
 const CommonUtils = require('../../utils/index');
 const service = require('../../service/common/user.service');
 
-const BaseController = require('../base');
+const BaseController = require('../base.controller');
 const Logger = require('../../utils/Logger');
 class UserController extends BaseController {
 	constructor(ctx) {
@@ -16,6 +16,11 @@ class UserController extends BaseController {
 		let actionDetail = [];
 		const params = ctx.request.body;
 		const { username, password } = params;
+
+		// ctx.verifyParams({
+		// 	username: { type: 'string', required: true },
+		// 	password: { type: 'string', required: true },
+		//   })
 
 		// 1. 判断用户名和密码是否为空
 		if (!username || !password) {
