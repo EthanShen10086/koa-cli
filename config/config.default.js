@@ -12,12 +12,20 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 module.exports = (app) => {
+	const {
+		APP_HOST = 'localhost',
+		APP_PORT = 3000,
+		MYSQL_HOST = 'localhost',
+		MYSQL_PORT = 3306,
+		MYSQL_DATABASE,
+		MYSQL_USER,
+		MYSQL_PASSWORD,
+	} = process.env;
+
 	const config = {};
 
 	// 组件配置
 	config.componentID = 'yyh';
-	// 后端接口服务
-	config.adminService = '/yyh-app/admin/api';
 	// 前端应用服务
 	config.contextPath = '/yyh-app';
 	// 静态资源
@@ -28,20 +36,25 @@ module.exports = (app) => {
 	if (app) {
 		// cookie安全字符串
 		config.keys = `${app.name}_12345`;
+		// config.keys = `${app.name}_${process.env.APP_SECRET || 'default_secret'}`;
 	}
 	// 应用基础配置
 	config.app = {
-		host: process.env.APP_HOST,
-		port: process.env.APP_PORT,
+		host: APP_HOST,
+		port: APP_PORT,
+		// 后端接口服务
+		adminAPI: `${config.contextPath}/admin/api`,
+		webAPI: `${config.contextPath}/web/api`,
+		appAPI: `${config.contextPath}/app/api`,
 	};
 
 	// 数据库配置
 	config.mysql = {
-		host: process.env.MYSQL_HOST,
-		port: process.env.MYSQL_PORT,
-		database: process.env.MYSQL_DATABASE,
-		user: process.env.MYSQL_USER,
-		password: process.env.MYSQL_PASSWORD,
+		host: MYSQL_HOST,
+		port: MYSQL_PORT,
+		database: MYSQL_DATABASE,
+		user: MYSQL_USER,
+		password: MYSQL_PASSWORD,
 	};
 
 	// 密钥配置

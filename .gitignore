@@ -1,5 +1,6 @@
 .DS_Store
 TODOs.md
+*.backup.js
 
 # Logs
 logs
