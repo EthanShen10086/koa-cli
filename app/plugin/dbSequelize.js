@@ -4,7 +4,7 @@ const Logger = require('../utils/Logger');
 const defaultConfig = initConfig();
 const sequelize = new Sequelize(
 	defaultConfig.mysql.database,
-	defaultConfig.mysql.username,
+	defaultConfig.mysql.user,
 	defaultConfig.mysql.password,
 	{
 		host: defaultConfig.mysql.host,
