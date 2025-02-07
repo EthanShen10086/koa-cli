@@ -70,6 +70,9 @@ class Logger {
 	static error(message, error) {
 		this.log('ERROR', message, error);
 	}
+	static debug(message) {
+		this.log('DEBUG', message);
+	}
 	static info(message) {
 		this.log('INFO', message);
 	}

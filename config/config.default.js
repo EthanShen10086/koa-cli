@@ -46,6 +46,7 @@ module.exports = (app) => {
 		adminAPI: `${config.contextPath}/admin/api`,
 		webAPI: `${config.contextPath}/web/api`,
 		appAPI: `${config.contextPath}/app/api`,
+		commonAPI: `${config.contextPath}/common/api`,
 	};
 
 	// 数据库配置
