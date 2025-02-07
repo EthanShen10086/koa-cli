@@ -10,7 +10,7 @@ const { isApp, spaSupport } = require('./app/middleware/static.middleware');
 const staticRouter = new Router();
 const initApiRouter = require('./app/router/index');
 const Logger = require('./app/utils/Logger');
-const BaseController = require('./app/controller/common/base');
+const BaseController = require('./app/controller/base');
 const defaultConfig = initConfig(app);
 // 静态文件挂载
 app.use(mount(defaultConfig.contextPath, isApp));
