@@ -3,6 +3,7 @@ const Logger = require('../utils/Logger');
 const path = require('path');
 const Router = require('@koa/router');
 const initConfig = require('../../config/config.default');
+const ErrorCodeMap = require('../common/constant/errorCode');
 
 // 递归获取子文件夹中的 .router.js 文件：
 function getRouterFileList(dir, fileList = []) {
@@ -30,7 +31,8 @@ function loadRouteList(router, routePath, middleware = []) {
 		});
 		Logger.debug(`Loaded ${routeFileList.length} routes from ${routePath}`);
 	} catch (error) {
-		Logger.error(`Route loading failed: ${routePath}`, error);
+		Logger.info(`Route loading failed: ${routePath}`);
+		Logger.error(error, ErrorCodeMap.ERROR_0x0300);
 		throw error; // 向上抛出错误
 	}
 }
@@ -73,7 +75,7 @@ function useRouteList(koaApp) {
 		// koaApp.use(baseRouter.routes()).use(DTOMiddleware)
 		koaApp.use(baseRouter.routes()).use(baseRouter.allowedMethods());
 	} catch (e) {
-		Logger.error(e);
+		Logger.error(e, ErrorCodeMap.ERROR_0x0300);
 	}
 }
 

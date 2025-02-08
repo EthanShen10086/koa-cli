@@ -32,18 +32,12 @@ importers:
       dotenv:
         specifier: ^16.4.7
         version: 16.4.7
-      http-assert:
-        specifier: ^1.5.0
-        version: 1.5.0
       js-base64:
         specifier: ^3.7.7
         version: 3.7.7
       koa:
         specifier: ^2.15.3
         version: 2.15.3
-      koa-json-error:
-        specifier: ^3.1.2
-        version: 3.1.2
       koa-mount:
         specifier: ^4.0.0
         version: 4.0.0
@@ -1694,10 +1688,6 @@ packages:
     resolution: {integrity: sha512-asOvN6bFlSnxewce2e/DK3p4tltyfC4VM7ZwuTuepI7dEQVcvpyFuBcEARu1+Hxg8DIwytce2n7jrZtRlPrARA==}
     engines: {node: '>= 10'}
 
-  koa-json-error@3.1.2:
-    resolution: {integrity: sha512-nqfNwD4W+hYaJijFl+6qNSQJHbTS4vp+gXTdXl5U8YK2PVNzCF0HnLZwyKHaMeBebhanAgmfheQv96wLDjLRxg==}
-    engines: {node: '>=6.0.0'}
-
   koa-mount@4.0.0:
     resolution: {integrity: sha512-rm71jaA/P+6HeCpoRhmCv8KVBIi0tfGuO/dMKicbQnQW/YJntJ6MnnspkodoA4QstMVEZArsCphmd0bJEtoMjQ==}
     engines: {node: '>= 7.6.0'}
@@ -1747,12 +1737,6 @@ packages:
 
   lodash.camelcase@4.3.0:
     resolution: {integrity: sha512-TwuEnCnxbc3rAvhf/LbG7tJUDzhqXyFnv3dtzLOPgCG/hODL7WFnsbwktkD7yUV0RrreP/l1PALq/YSg6VvjlA==}
-
-  lodash.compact@3.0.1:
-    resolution: {integrity: sha512-2ozeiPi+5eBXW1CLtzjk8XQFhQOEMwwfxblqeq6EGyTxZJ1bPATqilY0e6g2SLQpP4KuMeuioBhEnWz5Pr7ICQ==}
-
-  lodash.curry@4.1.1:
-    resolution: {integrity: sha512-/u14pXGviLaweY5JI0IUzgzF2J6Ne8INyzAZjImcryjgkZ+ebruBxy2/JaOOkTqScddcYtakjhSaeemV8lR0tA==}
 
   lodash.debounce@4.0.8:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
@@ -4236,11 +4220,6 @@ snapshots:
       co: 4.6.0
       koa-compose: 4.1.0
 
-  koa-json-error@3.1.2:
-    dependencies:
-      lodash.compact: 3.0.1
-      lodash.curry: 4.1.1
-
   koa-mount@4.0.0:
     dependencies:
       debug: 4.4.0
@@ -4337,10 +4316,6 @@ snapshots:
       p-locate: 6.0.0
 
   lodash.camelcase@4.3.0: {}
-
-  lodash.compact@3.0.1: {}
-
-  lodash.curry@4.1.1: {}
 
   lodash.debounce@4.0.8: {}
 

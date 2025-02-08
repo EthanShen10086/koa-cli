@@ -1,6 +1,7 @@
 const { Sequelize } = require('sequelize');
 const initConfig = require('../../config/config.default');
 const Logger = require('../utils/Logger');
+const ErrorCodeMap = require('../common/constant/errorCode');
 const defaultConfig = initConfig();
 const sequelize = new Sequelize(
 	defaultConfig.mysql.database,
@@ -19,6 +20,6 @@ sequelize
 		Logger.info('数据库连接成功');
 	})
 	.catch((err) => {
-		Logger.error('数据库连接失败', err);
+		Logger.error(err, ErrorCodeMap.ERROR_0x0200);
 	});
 module.exports = sequelize;

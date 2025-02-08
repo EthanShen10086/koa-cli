@@ -25,24 +25,17 @@ class Logger {
 		const levelList = ['DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'];
 		return levelList.indexOf(level) >= levelList.indexOf(this.level);
 	}
-	static formatStack(stack) {
-		if (!stack) return '';
-		// 格式化错误堆栈的逻辑
-		return stack
-			.split('\n')
-			.map((line) => `    at ${line}`)
-			.join('\n');
-	}
-	static log(level, message, error) {
+	static log(level, message, businessError) {
 		if (!this.shouldLog(level)) {
 			return;
 		}
 		const timestamp = new Date().toISOString();
-		const stack = error ? `\nStack: ${error.stack}` : '';
-		let formattedMessage = `[${timestamp}][${level.toUpperCase()}]${message}${stack}\n`;
-		// 格式化错误堆栈
-		if (error) {
-			formattedMessage += `\n${this.formatStack(error.stack)}\n`;
+		let formattedMessage = '';
+		if (level !== 'ERROR') {
+			formattedMessage = `[${timestamp}][${level.toUpperCase()}]${message}\n`;
+		} else {
+			const [code, msg] = businessError;
+			formattedMessage = `[${timestamp}][${level.toUpperCase()}]${code} ${msg}\n`;
 		}
 		switch (level) {
 			case 'DEBUG':
@@ -60,7 +53,7 @@ class Logger {
 			case 'ERROR':
 			case 'FATAL':
 				this.writeLog(formattedMessage);
-				console.error(formattedMessage);
+				console.error(formattedMessage, message);
 				break;
 			default:
 				this.writeLog(formattedMessage);
@@ -69,8 +62,8 @@ class Logger {
 	}
 	// 开发的时候用
 	// 单独抽出来 只做 打印 不写入日志
-	static error(message, error) {
-		this.log('ERROR', message, error);
+	static error(message, businessError) {
+		this.log('ERROR', message, businessError);
 	}
 	static debug(message) {
 		this.log('DEBUG', message);
