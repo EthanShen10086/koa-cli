@@ -43,10 +43,10 @@ module.exports = (app) => {
 		host: APP_HOST,
 		port: APP_PORT,
 		// 后端接口服务
-		adminAPI: `${config.contextPath}/admin/api`,
-		webAPI: `${config.contextPath}/web/api`,
-		appAPI: `${config.contextPath}/app/api`,
-		commonAPI: `${config.contextPath}/common/api`,
+		adminAPI: `${config.contextPath}/api/admin`,
+		webAPI: `${config.contextPath}/api/web`,
+		appAPI: `${config.contextPath}/api/app`,
+		commonAPI: `${config.contextPath}/api/common`,
 	};
 
 	// 数据库配置
