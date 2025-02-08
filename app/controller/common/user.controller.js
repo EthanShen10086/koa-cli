@@ -1,6 +1,6 @@
 const ErrorCodeMap = require('../../common/constant/errorCode');
 const { LogInfo } = require('../../common/constant/logData');
-const BusinessError = require('../../common/exception/AppError');
+const { BusinessError } = require('../../common/exception/AppError');
 const CommonUtils = require('../../utils/index');
 const service = require('../../service/common/user.service');
 
@@ -11,11 +11,12 @@ class UserController extends BaseController {
 		super(ctx);
 		this.userService = service;
 	}
-	async add(ctx) {
+	async add() {
 		let objectName = [];
 		let actionDetail = [];
-		const params = ctx.request.body;
+		const params = this.ctx.request.body;
 		const { username, password } = params;
+		console.log('params:', params);
 
 		// ctx.verifyParams({
 		// 	username: { type: 'string', required: true },
@@ -28,12 +29,12 @@ class UserController extends BaseController {
 			this.handleError(error);
 		}
 
-		// 2. 判断用户名是否已经存在
-		const user = await service.getUserByUsername(username);
-		if (user) {
-			const error = new BusinessError(ErrorCodeMap.ERROR_0x0003);
-			this.handleError(error);
-		}
+		// // 2. 判断用户名是否已经存在
+		// const user = await service.getUserByUsername(username);
+		// if (user) {
+		// 	const error = new BusinessError(ErrorCodeMap.ERROR_0x0003);
+		// 	this.handleError(error);
+		// }
 
 		// 3. 插入用户
 		try {
@@ -58,11 +59,10 @@ class UserController extends BaseController {
 			actionDetail = null;
 		}
 	}
-	async list(ctx) {
-		console.log('进来了吗');
-		ctx.status = 200;
-		ctx.body = '请求成功';
+	async list() {
+		this.ctx.status = 200;
+		this.ctx.body = '请求成功';
 	}
 }
 
-module.exports = new UserController();
+module.exports = UserController;

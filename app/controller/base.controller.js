@@ -1,9 +1,12 @@
 const ErrorCodeMap = require('../common/constant/errorCode');
-const BusinessError = require('../common/exception/AppError');
+const { BusinessError } = require('../common/exception/AppError');
 
 const Logger = require('../utils/Logger');
 const CommonUtils = require('../utils/index');
 class BaseController {
+	constructor(ctx) {
+		this.ctx = ctx; // 显式保存上下文
+	}
 	// 取登录用户对象
 	get user() {
 		return this.ctx.session.userInfo;
@@ -64,12 +67,12 @@ class BaseController {
 		}
 	}
 
-	static success(data) {
+	success(data) {
 		this.ctx.body = data;
 		this.ctx.status = 200;
 	}
 	// 失败信息封装
-	static fail({ data }) {
+	fail({ data }) {
 		this.ctx.body = {
 			type: -1,
 			code: data.code,
@@ -79,58 +82,44 @@ class BaseController {
 		this.ctx.status = 500;
 	}
 	// 失败信息封装
-	static error({ type, code, msg, data, serviceErrorCode }) {
+	error({ type, code, msg, data }) {
 		// msg需要传入data值的错误码
 		this.ctx.body = {
 			type: type || -2,
 			code,
 			data,
 			msg,
-			serviceErrorCode,
 		};
 		this.ctx.status = 500;
 	}
-	static redirect({
-		type = -2,
-		code = '403',
-		data = {},
-		msg = 'session过期',
-		serviceErrorCode = '403',
-	}) {
+	redirect({ type = -2, code = '403', data = {}, msg = 'session过期' }) {
 		this.ctx.body = {
 			type,
 			code,
 			data,
 			msg,
-			serviceErrorCode,
 		};
 		this.ctx.status = 403;
 	}
 
 	// 异常处理日志打印及返回结果统一封装,适用于页面级请求
-	static handleError(error, ConstError = ErrorCodeMap.ERROR_0x0000) {
+	handleError(error) {
 		// 抛出错误
 		this.ctx.app.emit('error', error, this.ctx);
-		this.errorHandle(error, ConstError);
 	}
-	static errorHandle(error, ConstError) {
-		// Logger 错误
-		if (error instanceof BusinessError) {
-			Logger.error(error);
-		} else {
-			error.code = ConstError[0];
-			if (!error.message) {
-				error.message = ConstError[1];
-			}
-			Logger.error(error);
+	errorHandle(error, ConstError = ErrorCodeMap.ERROR_0x0000) {
+		// Ensure BusinessError is properly imported
+		if (!BusinessError) {
+			throw new Error('BusinessError class not properly imported');
 		}
-		// TODO：封装 koa-json-error 避免将堆栈错误信息暴露给前端
-		// 返回错误
-		this.error({ code: `${error.code}`, msg: `${error.message}` });
+		Logger.error(error, ConstError);
+
+		// Return the error response
+		this.error({ code: `${error.status}`, msg: `${error.message}` });
 	}
 
 	// 异常处理日志打印及返回结果统一封装,适用于rest接口
-	static throwError(error, ConstError) {
+	throwError(error, ConstError) {
 		if (error instanceof BusinessError) {
 			throw error;
 		} else {

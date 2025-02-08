@@ -1,11 +1,17 @@
 const Router = require('@koa/router');
-const { add, list } = require('../../controller/common/user.controller');
+const UserController = require('../../controller/common/user.controller');
 
 // 根据url自动获取model 比如 /v1/user
 const userRouter = new Router({
 	prefix: '/v1/:resource',
 });
 
-userRouter.post('/add', add);
-userRouter.get('/list', list);
+userRouter.post('/add', async (ctx) => {
+	const controller = new UserController(ctx);
+	await controller.add();
+});
+userRouter.get('/list', async (ctx) => {
+	const controller = new UserController(ctx);
+	await controller.list();
+});
 module.exports = userRouter;
