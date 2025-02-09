@@ -20,7 +20,7 @@ class BaseController {
 			return 'admin';
 		}
 	}
-
+	// 1. 处理业务错误逻辑 日志打印以及结果统一封装
 	//  自定义信息
 	msg({ type = 0, code = '0', msg = 'SUCCESS', data = {}, status, ...others }) {
 		this.ctx.body = {
@@ -34,56 +34,45 @@ class BaseController {
 	}
 	// 要返回的数据
 	feedback(result) {
-		let newResult = result;
 		const defaultCode = {
 			code: '0x0000',
 		};
-		if (newResult.status === 404 || newResult.code === '404') {
-			const { code, msg } = ErrorCodeMap.ERROR_404;
-			defaultCode.code = code;
-			newResult.code = code;
-			defaultCode.type = -1;
-			defaultCode.msg = msg;
-		}
-		if (newResult.status === 403 || newResult.code === '403') {
-			this.redirect(newResult);
-			return;
-		}
-		if (CommonUtils.isEmpty(newResult)) {
+		if (CommonUtils.isEmpty(result)) {
 			this.msg({
 				...defaultCode,
-				status: result.status,
+				type: -1,
 			});
+		}
+		const { code = '0' } = result;
+		if (code === '0') {
+			this.success(result.data);
 		} else {
-			if (newResult.code === '0') {
-				this.success(newResult);
-			} else {
-				if (CommonUtils.isEmpty(newResult.code)) {
-					this.error(result.data);
-				} else {
-					this.msg(newResult);
-				}
-			}
+			this.error(result);
 		}
 	}
 
 	success(data) {
-		this.ctx.body = data;
+		this.ctx.body = {
+			type: 0,
+			code: '0',
+			data,
+			msg: 'SUCCESS',
+		};
 		this.ctx.status = 200;
 	}
 	// 失败信息封装
-	fail({ data }) {
+	fail({ code, data, msg }) {
 		this.ctx.body = {
 			type: -1,
-			code: data.code,
-			data: data.data,
-			msg: data.msg,
+			code: code,
+			data: data,
+			msg: msg,
 		};
 		this.ctx.status = 500;
 	}
 	// 失败信息封装
-	error({ type, code, msg, data }) {
-		// msg需要传入data值的错误码
+	error({ type, code, msg, data = {} }) {
+		// 这里的body对应res.data 所以前端用res.data.data
 		this.ctx.body = {
 			type: type || -2,
 			code,
@@ -102,20 +91,20 @@ class BaseController {
 		this.ctx.status = 403;
 	}
 
-	// 异常处理日志打印及返回结果统一封装,适用于页面级请求
+	// 2. 异常处理日志打印及返回结果统一封装 handleError 和 errorHandle 以及 errorController 共同起作用
 	handleError(error) {
 		// 抛出错误
 		this.ctx.app.emit('error', error, this.ctx);
 	}
-	errorHandle(error, ConstError = ErrorCodeMap.ERROR_0x0000) {
+	errorHandle(error, ConstError = ErrorCodeMap.ERROR_Default_ERROR) {
 		// Ensure BusinessError is properly imported
 		if (!BusinessError) {
 			throw new Error('BusinessError class not properly imported');
 		}
 		Logger.error(error, ConstError);
-
-		// Return the error response
-		this.error({ code: `${error.status}`, msg: `${error.message}` });
+		// 业务的error code 返回businessCoode
+		// 程序的error code 返回500
+		this.error({ code: `${error.status}`, msg: `${ConstError[1]}` });
 	}
 
 	// 异常处理日志打印及返回结果统一封装,适用于rest接口

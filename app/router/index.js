@@ -32,7 +32,7 @@ function loadRouteList(router, routePath, middleware = []) {
 		Logger.debug(`Loaded ${routeFileList.length} routes from ${routePath}`);
 	} catch (error) {
 		Logger.info(`Route loading failed: ${routePath}`);
-		Logger.error(error, ErrorCodeMap.ERROR_0x0300);
+		Logger.error(error, ErrorCodeMap.ERROR_ROUTER_INIT);
 		throw error; // 向上抛出错误
 	}
 }
@@ -75,7 +75,7 @@ function useRouteList(koaApp) {
 		// koaApp.use(baseRouter.routes()).use(DTOMiddleware)
 		koaApp.use(baseRouter.routes()).use(baseRouter.allowedMethods());
 	} catch (e) {
-		Logger.error(e, ErrorCodeMap.ERROR_0x0300);
+		Logger.error(e, ErrorCodeMap.ERROR_ROUTER_INIT);
 	}
 }
 

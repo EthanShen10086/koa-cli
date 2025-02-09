@@ -1,6 +1,5 @@
 const ErrorCodeMap = require('../../common/constant/errorCode');
 const { LogInfo } = require('../../common/constant/logData');
-const { BusinessError } = require('../../common/exception/AppError');
 const CommonUtils = require('../../utils/index');
 const service = require('../../service/common/user.service');
 
@@ -25,15 +24,18 @@ class UserController extends BaseController {
 
 		// 1. 判断用户名和密码是否为空
 		if (!username || !password) {
-			const error = new BusinessError(ErrorCodeMap.ERROR_0x0004);
-			this.handleError(error);
+			const res = {
+				code: ErrorCodeMap.ERROR_PARAMS_ILLEGAL[0],
+				data: {},
+				msg: ErrorCodeMap.ERROR_PARAMS_ILLEGAL[1],
+			};
+			this.feedback(res);
+			return;
 		}
 
 		// // 2. 判断用户名是否已经存在
 		// const user = await service.getUserByUsername(username);
 		// if (user) {
-		// 	const error = new BusinessError(ErrorCodeMap.ERROR_0x0003);
-		// 	this.handleError(error);
 		// }
 
 		// 3. 插入用户

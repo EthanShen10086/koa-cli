@@ -31,11 +31,10 @@ initApiRouter(app);
 app.on('error', (err, ctx) => {
 	// 绑定上下文
 	const errorController = new BaseController(ctx);
-
 	errorController.errorHandle(err);
 });
 app.listen(defaultConfig.app.port, () => {
 	Logger.info(
-		`Server is running at Server is running at URL_ADDRESS:${defaultConfig.app.host}:${defaultConfig.app.port}`,
+		`Server is running at Server is running at URL_ADDRESS${defaultConfig.app.host}:${defaultConfig.app.port}`,
 	);
 });

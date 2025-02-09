@@ -8,7 +8,7 @@ const connection = mysql.createPool(defaultConfig.mysql);
 connection.getConnection((error, conn) => {
 	conn.connect((err) => {
 		if (err) {
-			Logger.error(error, ErrorCodeMap.ERROR_0x0200);
+			Logger.error(error, ErrorCodeMap.ERROR_DATABASE_INIT);
 		} else {
 			Logger.info('database connect success');
 		}

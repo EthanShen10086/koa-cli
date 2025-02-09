@@ -20,6 +20,6 @@ sequelize
 		Logger.info('数据库连接成功');
 	})
 	.catch((err) => {
-		Logger.error(err, ErrorCodeMap.ERROR_0x0200);
+		Logger.error(err, ErrorCodeMap.ERROR_DATABASE_INIT);
 	});
 module.exports = sequelize;

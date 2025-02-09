@@ -1,8 +1,8 @@
 const ErrorCodeMap = {
-	ERROR_0x0000: ['0x0000', '后端程序未知错误'],
-	ERROR_0x0002: ['0x0002', '请求参数非法'],
-	ERROR_0x0004: ['0x0003', '请求操作对象已存在'],
-	ERROR_0x0003: ['0x0004', '请求操作对象不存在'],
+	ERROR_Default_ERROR: ['0x0000', '后端程序未知错误'],
+	ERROR_PARAMS_ILLEGAL: ['0x0002', '请求参数非法'],
+	ERROR_OBJECT_EXIST: ['0x0003', '请求操作对象已存在'],
+	ERROR_OBJECT_NOT_EXIST: ['0x0004', '请求操作对象不存在'],
 	ERROR_0x0005: ['0x0005', '请求操作对象已被占用'],
 	ERROR_0x0006: ['0x0006', '请求操作对象已被禁用'],
 	ERROR_0x0007: ['0x0007', '请求操作对象已被删除'],
@@ -14,8 +14,8 @@ const ErrorCodeMap = {
 	ERROR_0x0019: ['0x0009', '未获取到授权项'],
 	ERROR_0x0020: ['0x0010', '已达到授权场景数量上限:'],
 	ERROR_0x0100: ['0x0100', '请求操作失败'],
-	ERROR_0x0200: ['0x0200', '数据库连接失败'],
-	ERROR_0x0300: ['0x0200', '路由连接失败'],
+	ERROR_DATABASE_INIT: ['0x0200', '数据库连接失败'],
+	ERROR_ROUTER_INIT: ['0x0300', '路由初始化失败'],
 };
 
 module.exports = ErrorCodeMap;
