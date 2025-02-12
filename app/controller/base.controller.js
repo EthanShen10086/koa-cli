@@ -23,6 +23,10 @@ class BaseController {
 	// 1. 处理业务错误逻辑 日志打印以及结果统一封装
 	//  自定义信息
 	msg({ type = 0, code = '0', msg = 'SUCCESS', data = {}, status, ...others }) {
+		// koa 封装
+		// this.ctx.body === this.ctx.response.body;
+		// this.ctx.status === this.ctx.response.status;
+
 		this.ctx.body = {
 			code,
 			msg,
@@ -37,7 +41,7 @@ class BaseController {
 		const defaultCode = {
 			code: '0x0000',
 		};
-		if (CommonUtils.isEmpty(result)) {
+		if (CommonUtils.notEmpty(result)) {
 			this.msg({
 				...defaultCode,
 				type: -1,
@@ -91,20 +95,20 @@ class BaseController {
 		this.ctx.status = 403;
 	}
 
-	// 2. 异常处理日志打印及返回结果统一封装 handleError 和 errorHandle 以及 errorController 共同起作用
-	handleError(error) {
-		// 抛出错误
-		this.ctx.app.emit('error', error, this.ctx);
-	}
+	// 2. 异常处理日志打印及返回结果统一封装  errorHandle 以及 errorController 共同起作用
+	// 抛出类new Error() 的错误
+	// handleError(error) {
+	// 	// 抛出错误
+	// 	this.ctx.app.emit('error', error, this.ctx);
+	// }
 	errorHandle(error, ConstError = ErrorCodeMap.ERROR_Default_ERROR) {
 		// Ensure BusinessError is properly imported
 		if (!BusinessError) {
 			throw new Error('BusinessError class not properly imported');
 		}
 		Logger.error(error, ConstError);
-		// 业务的error code 返回businessCoode
-		// 程序的error code 返回500
-		this.error({ code: `${error.status}`, msg: `${ConstError[1]}` });
+		const [code, msg] = ConstError;
+		this.error({ code: `${code}`, msg: `${msg}` });
 	}
 
 	// 异常处理日志打印及返回结果统一封装,适用于rest接口

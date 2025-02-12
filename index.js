@@ -29,6 +29,7 @@ initApiRouter(app);
 
 // 统一的错误拦截器 如果业务当中没有及时抛出异常 在这里做兜底
 app.on('error', (err, ctx) => {
+	console.log('统一的错误处理');
 	// 绑定上下文
 	const errorController = new BaseController(ctx);
 	errorController.errorHandle(err);

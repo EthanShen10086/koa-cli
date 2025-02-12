@@ -13,8 +13,13 @@ const ErrorCodeMap = {
 	ERROR_0x0012: ['0x0012', '请求操作对象已被拒绝'],
 	ERROR_0x0019: ['0x0009', '未获取到授权项'],
 	ERROR_0x0020: ['0x0010', '已达到授权场景数量上限:'],
-	ERROR_0x0100: ['0x0100', '请求操作失败'],
+	ERROR_PASSWORD_ILLEGAL: [
+		'0x0100',
+		'密码必须包含大小写字母、数字和特殊字符，且长度为8-20位',
+	],
+	ERROR_USERNAME_ILLEGAL: ['0x0101', '用户名不能为空'],
 	ERROR_DATABASE_INIT: ['0x0200', '数据库连接失败'],
+	ERROR_SQL_ERROR: ['0x0201', 'SQL语句错误'],
 	ERROR_ROUTER_INIT: ['0x0300', '路由初始化失败'],
 };
 

@@ -72,8 +72,16 @@ class Logger {
 		this.log('INFO', message);
 	}
 	// 生产查看日志信息
-	static writeLog(formattedMessage) {
-		fs.appendFileSync(path.join(this.logDir, 'app.log'), formattedMessage);
+	static writeLog(log) {
+		// 处理日志内容
+		let logContent;
+		if (typeof log === 'string') {
+			logContent = log;
+		} else {
+			// 如果日志是对象，将其转换为 JSON 字符串
+			logContent = JSON.stringify(log);
+		}
+		fs.appendFileSync(path.join(this.logDir, 'app.log'), logContent);
 	}
 }
 

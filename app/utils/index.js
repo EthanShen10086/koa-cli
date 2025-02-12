@@ -1,5 +1,6 @@
 const { Base64 } = require('js-base64');
 const { v4: uuidv4 } = require('uuid');
+const Logger = require('./Logger');
 
 class CommonUtils {
 	static isFileBase64(fileSrc) {
@@ -24,7 +25,7 @@ class CommonUtils {
 	static base64DataToImage(base64Data) {
 		return 'data:image/png;base64,' + base64Data;
 	}
-	static isEmpty(obj) {
+	static notEmpty(obj) {
 		if (obj === null || obj === undefined) {
 			return false;
 		}
@@ -51,7 +52,18 @@ class CommonUtils {
 	}
 
 	static dataToString(obj) {
-		return JSON.stringify(JSON.parse(obj));
+		try {
+			// 如果 obj 是字符串，尝试解析为 JSON
+			if (typeof obj === 'string') {
+				return JSON.stringify(JSON.parse(obj));
+			}
+			// 如果 obj 是对象，直接转换为 JSON 字符串
+			return JSON.stringify(obj);
+		} catch (error) {
+			Logger.error(error);
+			// 如果解析失败，返回对象的字符串表示
+			return obj.toString();
+		}
 	}
 }
 
