@@ -39,11 +39,10 @@ class UserController extends BaseController {
 			const errorMessage = error.errors
 				? error.errors[0].message
 				: error.message;
-			this.error({
+			return this.error({
 				code: ErrorCodeMap.ERROR_PARAMS_ILLEGAL[0],
 				msg: errorMessage,
 			});
-			return;
 		}
 
 		try {
@@ -55,8 +54,7 @@ class UserController extends BaseController {
 					data: {},
 					msg: ErrorCodeMap.ERROR_OBJECT_EXIST[1],
 				};
-				this.feedback(res);
-				return;
+				return this.feedback(res);
 			}
 		} catch (err) {
 			return this.errorHandle(err);
@@ -83,15 +81,63 @@ class UserController extends BaseController {
 				actionDetail: actionDetail.join(','),
 			};
 			Logger.writeLog(log);
-			// 手动释放内存
-			log = null;
-			objectName = null;
-			actionDetail = null;
 		}
 	}
 	async list() {
-		this.ctx.status = 200;
-		this.ctx.body = '请求成功';
+		let objectName = [];
+		let actionDetail = [];
+		const params = this.ctx.request.body;
+		const { pageNo, pageSize, userName, startTime, endTime } = params;
+		try {
+			this.ctx.verifyParams({
+				pageNo: {
+					type: 'number',
+					required: true,
+					min: 1,
+					message: 'pageNo不能为空 最小为1',
+				},
+				pageSize: {
+					type: 'number',
+					required: true,
+					max: 100,
+					message: 'pageSize不能为空 最大为100',
+				},
+			});
+		} catch (error) {
+			// 格式化 koa-parameter 的错误信息
+			const errorMessage = error.errors
+				? error.errors[0].message
+				: error.message;
+			return this.error({
+				code: ErrorCodeMap.ERROR_PARAMS_ILLEGAL[0],
+				msg: errorMessage,
+			});
+		}
+		try {
+			const data = await this.userService.list(pageNo, pageSize, {
+				userName,
+				startTime,
+				endTime,
+			});
+			const result = {
+				code: '0',
+				data,
+			};
+			objectName.push('用户列表');
+			actionDetail.push('UserController list');
+			this.feedback(result);
+		} catch (err) {
+			return this.errorHandle(err);
+		} finally {
+			let log = {
+				module: LogInfo.MODULE_USER,
+				objectType: LogInfo.OBJECT_USER_ITEM,
+				objectName: objectName.join(','),
+				action: LogInfo.ACTION_QUERY,
+				actionDetail: actionDetail.join(','),
+			};
+			Logger.writeLog(log);
+		}
 	}
 }
 

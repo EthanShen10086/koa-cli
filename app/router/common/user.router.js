@@ -10,7 +10,7 @@ userRouter.post('/add', async (ctx) => {
 	const controller = new UserController(ctx);
 	await controller.add();
 });
-userRouter.get('/list', async (ctx) => {
+userRouter.post('/list', async (ctx) => {
 	const controller = new UserController(ctx);
 	await controller.list();
 });

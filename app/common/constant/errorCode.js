@@ -20,6 +20,8 @@ const ErrorCodeMap = {
 	ERROR_USERNAME_ILLEGAL: ['0x0101', '用户名不能为空'],
 	ERROR_DATABASE_INIT: ['0x0200', '数据库连接失败'],
 	ERROR_SQL_ERROR: ['0x0201', 'SQL语句错误'],
+	ERROR_SQL_PARAMS_ILLEGAL: ['0x0202', 'SQL参数传递非法'],
+	ERROR_SQL_OUT_RANGE: ['0x0203', 'SQL获取数据超出容量'],
 	ERROR_ROUTER_INIT: ['0x0300', '路由初始化失败'],
 };
 
