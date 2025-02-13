@@ -2,7 +2,6 @@ const Koa = require('koa');
 // const mount = require('koa-mount');
 // const Router = require('@koa/router');
 const cors = require('@koa/cors');
-const parameter = require('koa-parameter');
 // 初始化
 const app = new Koa();
 const initConfig = require('./config/config.default');
@@ -14,7 +13,6 @@ const Logger = require('./app/utils/Logger');
 const BaseController = require('./app/controller/base.controller');
 const defaultConfig = initConfig(app);
 
-app.use(parameter(app));
 app.use(cors());
 
 // // 静态文件挂载

@@ -1,25 +1,44 @@
 const connection = require('../../plugin/db');
 const User = require('../../model/user');
-
 const BaseService = require('../base.service');
 const { BusinessError } = require('../../common/exception/AppError');
 const ErrorCodeMap = require('../../common/constant/errorCode');
-const {
-	snowFlakeGenerator,
-	snowflakeIdToId,
-	filterSensitiveFields,
-} = require('../../utils');
+const { snowFlakeGenerator, filterSensitiveFields } = require('../../utils');
 
 // service 执行sql语句
 class UserService extends BaseService {
 	constructor() {
 		super(User);
 	}
-	async add(userName, password) {
+	async add(addParams) {
+		// 只对model中定义好的字段进行修改
+		// 如果使用ORM ORM自动会在反序列化的时候进行过滤
+		const allowedFieldsList = [
+			'userName',
+			'password',
+			'email',
+			'gender',
+			'birthday',
+			'avatarURL',
+		];
+		// 过滤非法字段
+		const filteredParams = Object.keys(addParams)
+			.filter((key) => allowedFieldsList.includes(key))
+			.reduce((obj, key) => {
+				obj[key] = addParams[key];
+				return obj;
+			}, {});
+
 		const id = snowFlakeGenerator.nextId();
+		const insertParamList = Object.keys(filteredParams).join(',');
+		const valueParamList = Object.keys(filteredParams)
+			.map(() => '?')
+			.join(',');
+		const queryParamList = Object.values(filteredParams);
 		try {
-			const sql = `INSERT INTO user (userName, password, id) VALUES (?, ?, ?)`;
-			const res = await connection.execute(sql, [userName, password, id]);
+			// `INSERT INTO user (userName, password, id) VALUES (?, ?, ?)`
+			const sql = `INSERT INTO user (id, ${insertParamList}) VALUES (?, ${valueParamList})`;
+			const res = await connection.execute(sql, [id, ...queryParamList]);
 			// 返回成功信息
 			return res[0];
 		} catch (e) {
@@ -27,25 +46,29 @@ class UserService extends BaseService {
 			throw new BusinessError(ErrorCodeMap.ERROR_SQL_ERROR);
 		}
 	}
-	async getUserByUsername(userName) {
+	async findByUsername(userName) {
 		try {
 			const sql = `
-            SELECT 
-                id,
-                userName, 
-                createAt, 
-                updateAt, 
-                gender, 
-                birthday, 
-                email, 
-                avatarURL 
+            SELECT *
             FROM user 
             WHERE userName = ?`;
-			const res = await connection.execute(sql, [userName]);
-			return res[0].map((item) => ({
-				...item,
-				id: snowflakeIdToId(item.id),
-			}));
+			const [res] = await connection.execute(sql, [userName]);
+			// userName是唯一的 所以直接用res[0] 多个结果需要map
+			return res.length > 0 ? filterSensitiveFields(res[0]) : res;
+		} catch (e) {
+			console.error(e);
+			throw new BusinessError(ErrorCodeMap.ERROR_SQL_ERROR);
+		}
+	}
+	async findById(id) {
+		try {
+			const sql = `
+            SELECT *
+            FROM user 
+            WHERE id = ?`;
+			const [res] = await connection.execute(sql, [id]);
+			// id是唯一的 所以直接用res[0] 多个结果需要map
+			return filterSensitiveFields(res[0]);
 		} catch (e) {
 			console.error(e);
 			throw new BusinessError(ErrorCodeMap.ERROR_SQL_ERROR);
@@ -137,7 +160,6 @@ class UserService extends BaseService {
 				list: res.map((item) => {
 					return filterSensitiveFields({
 						...item,
-						id: snowflakeIdToId(item.id),
 					});
 				}),
 				paegNo: Number(pageNo),
@@ -150,10 +172,61 @@ class UserService extends BaseService {
 		}
 	}
 
-	// async update(id) { }
-	// async delete(id) {
+	async update(id, updateParams) {
+		try {
+			const allowedFieldsList = [
+				'userName',
+				'password',
+				'email',
+				'gender',
+				'birthday',
+				'avatarURL',
+			];
+			// 过滤非法字段
+			const filteredParams = Object.keys(updateParams)
+				.filter((key) => allowedFieldsList.includes(key))
+				.reduce((obj, key) => {
+					obj[key] = updateParams[key];
+					return obj;
+				}, {});
 
-	// }
-	// async batchDelete(idList) { }
+			const setParamsList = [];
+			const queryParamsList = [];
+			Object.entries(filteredParams).forEach(([key, value]) => {
+				setParamsList.push(`${key} = ?`);
+				queryParamsList.push(value);
+			});
+			queryParamsList.push(id);
+			// `UPDATE moment SET content = ? WHERE id = ?;`;
+			const sql = `UPDATE user SET ${setParamsList.join(', ')} WHERE id = ?`;
+			const res = await connection.execute(sql, queryParamsList);
+			return res[0];
+		} catch (e) {
+			console.error(e);
+			throw new BusinessError(ErrorCodeMap.ERROR_SQL_ERROR);
+		}
+	}
+	async delete(id) {
+		try {
+			const sql = `DELETE FROM user WHERE id = ?`;
+			const res = await connection.execute(sql, [id]);
+			return res[0];
+		} catch (e) {
+			console.error(e);
+			throw new BusinessError(ErrorCodeMap.ERROR_SQL_ERROR);
+		}
+	}
+	async batchDelete(idList) {
+		try {
+			const inSQL = idList.map(() => '?').join(',');
+			// [1, 2, 3] => '?,?,?'
+			const sql = `DELETE FROM user WHERE id IN (${inSQL})`;
+			const res = await connection.execute(sql, idList);
+			return res[0];
+		} catch (e) {
+			console.error(e);
+			throw new BusinessError(ErrorCodeMap.ERROR_SQL_ERROR);
+		}
+	}
 }
 module.exports = UserService;

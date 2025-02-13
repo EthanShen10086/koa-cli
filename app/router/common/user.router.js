@@ -14,4 +14,20 @@ userRouter.post('/list', async (ctx) => {
 	const controller = new UserController(ctx);
 	await controller.list();
 });
+userRouter.get('/findById', async (ctx) => {
+	const controller = new UserController(ctx);
+	await controller.findById();
+});
+userRouter.post('/update', async (ctx) => {
+	const controller = new UserController(ctx);
+	await controller.update();
+});
+userRouter.post('/delete', async (ctx) => {
+	const controller = new UserController(ctx);
+	await controller.delete();
+});
+userRouter.post('/batchDelete', async (ctx) => {
+	const controller = new UserController(ctx);
+	await controller.batchDelete();
+});
 module.exports = userRouter;
