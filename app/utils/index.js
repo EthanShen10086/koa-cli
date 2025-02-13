@@ -107,22 +107,6 @@ class CommonUtils {
 		}
 		return data;
 	}
-
-	// 1228935168\u0000\u0000\u0000\u0000\u0000\u0000
-	// buffer用toString() 默认 utf8 编码的
-	static snowflakeIdToId(snowflakeId) {
-		return snowflakeId instanceof Buffer
-			? snowflakeId.toString().replace(/\0/g, '')
-			: snowflakeId;
-	}
-
-	static idToSnowflakeId(snowflakeId) {
-		const str =
-			snowflakeId instanceof Buffer
-				? snowflakeId.toString('utf8').replace(/\0/g, '')
-				: String(snowflakeId);
-		return BigInt(str);
-	}
 }
 
 module.exports = CommonUtils;
