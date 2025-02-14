@@ -1,7 +1,7 @@
 'use strict';
 const dotenv = require('dotenv');
 // const fs = require('fs');
-// const path = require('path');
+const path = require('path');
 
 // 加载环境变量
 // 根据 NODE_ENV 加载不同的 .env 文件
@@ -32,6 +32,25 @@ module.exports = (app) => {
 	config.static = {
 		// 7 天
 		cacheTime: 7 * 24 * 60 * 60 * 1000,
+		adminStaticPath: path.join(__dirname, '../static/admin'),
+		appStaticPath: path.join(__dirname, '../static/app'),
+		webStaticPath: path.join(__dirname, '../static/web'),
+		businessUploadFile: path.join(
+			__dirname,
+			'../app/common/business/upload/file',
+		),
+		businessUploadImg: path.join(
+			__dirname,
+			'../app/common/business/upload/img',
+		),
+		businessOutputFile: path.join(
+			__dirname,
+			'../app/common/business/output/file',
+		),
+		businessOutputImg: path.join(
+			__dirname,
+			'../app/common/business/output/img',
+		),
 	};
 	if (app) {
 		// cookie安全字符串

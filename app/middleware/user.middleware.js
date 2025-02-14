@@ -35,7 +35,6 @@ const verifyUser = async (ctx, next) => {
 	}).options({ allowUnknown: true });
 
 	const { error } = schema.validate(params, { abortEarly: false });
-	console.log(error, '== 报错');
 	if (error) {
 		const errorMessage = error.details[0].message;
 		ctx.status = 500;
@@ -83,14 +82,13 @@ const verifyPageList = async (ctx, next) => {
 
 const verifyId = async (ctx, next) => {
 	const params = ctx.request.body;
-	const { id } = params;
 	const schema = Joi.object({
 		id: Joi.string().required().trim().messages({
 			'string.empty': 'id不能为空',
 			'any.required': 'id不能为空',
 		}),
 	});
-	const { error } = schema.validate(id, { abortEarly: false });
+	const { error } = schema.validate(params, { abortEarly: false });
 	if (error) {
 		const errorMessage = error.details[0].message;
 		ctx.status = 500;
@@ -104,15 +102,14 @@ const verifyId = async (ctx, next) => {
 	await next();
 };
 const verifyQueryId = async (ctx, next) => {
-	const params = ctx.request.query;
-	const { id } = params;
+	const query = ctx.request.query;
 	const schema = Joi.object({
 		id: Joi.string().required().trim().messages({
 			'string.empty': 'id不能为空',
 			'any.required': 'id不能为空',
 		}),
 	});
-	const { error } = schema.validate(id, { abortEarly: false });
+	const { error } = schema.validate(query, { abortEarly: false });
 	if (error) {
 		const errorMessage = error.details[0].message;
 		ctx.status = 500;
