@@ -1,7 +1,9 @@
 'use strict';
 const dotenv = require('dotenv');
-// const fs = require('fs');
+const fs = require('fs');
 const path = require('path');
+const Logger = require('../app/utils/Logger');
+const ErrorCodeMap = require('../app/common/constant/errorCode');
 
 // 加载环境变量
 // 根据 NODE_ENV 加载不同的 .env 文件
@@ -32,22 +34,22 @@ module.exports = (app) => {
 	config.static = {
 		// 7 天
 		cacheTime: 7 * 24 * 60 * 60 * 1000,
-		adminStaticPath: path.join(__dirname, '../static/admin'),
-		appStaticPath: path.join(__dirname, '../static/app'),
-		webStaticPath: path.join(__dirname, '../static/web'),
-		businessUploadFile: path.join(
+		adminStaticPath: path.resolve(__dirname, '../static/admin'),
+		appStaticPath: path.resolve(__dirname, '../static/app'),
+		webStaticPath: path.resolve(__dirname, '../static/web'),
+		businessUploadFile: path.resolve(
 			__dirname,
 			'../app/common/business/upload/file',
 		),
-		businessUploadImg: path.join(
+		businessUploadImg: path.resolve(
 			__dirname,
 			'../app/common/business/upload/img',
 		),
-		businessOutputFile: path.join(
+		businessOutputFile: path.resolve(
 			__dirname,
 			'../app/common/business/output/file',
 		),
-		businessOutputImg: path.join(
+		businessOutputImg: path.resolve(
 			__dirname,
 			'../app/common/business/output/img',
 		),
@@ -77,24 +79,49 @@ module.exports = (app) => {
 		password: MYSQL_PASSWORD,
 	};
 
-	// 密钥配置
-	// try {
-	// 	config.jwt = {
-	// 		privateKey: fs.readFileSync(
-	// 			path.resolve(__dirname, './keys/private.key'),
-	// 		),
-	// 		publicKey: fs.readFileSync(path.resolve(__dirname, './keys/public.key')),
-	// 	};
-	// } catch (err) {
-	// 	console.warn(
-	// 		err,
-	// 		'Warning: JWT keys not found. Please ensure keys are properly configured.',
-	// 	);
-	// 	config.jwt = {
-	// 		privateKey: '',
-	// 		publicKey: '',
-	// 	};
-	// }
+	// 密钥配置;
+	try {
+		const keysDir = path.resolve(__dirname, './keys');
+		// 确保密钥目录存在
+		if (!fs.existsSync(keysDir)) {
+			fs.mkdirSync(keysDir, { recursive: true });
+		}
+
+		const privateKeyPath = path.join(keysDir, 'private.key');
+		const publicKeyPath = path.join(keysDir, 'public.key');
+
+		// 如果任一密钥文件不存在则生成新密钥对
+		if (!fs.existsSync(privateKeyPath) || !fs.existsSync(publicKeyPath)) {
+			const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
+				modulusLength: 1024,
+				publicKeyEncoding: {
+					type: 'spki',
+					format: 'pem',
+				},
+				privateKeyEncoding: {
+					type: 'pkcs8',
+					format: 'pem',
+				},
+			});
+			fs.writeFileSync(privateKeyPath, privateKey);
+			fs.writeFileSync(publicKeyPath, publicKey);
+		}
+
+		const PRIVATE_KEY = fs.readFileSync(privateKeyPath);
+		const PUBLIC_KEY = fs.readFileSync(publicKeyPath);
+		config.jwt = {
+			PRIVATE_KEY,
+			PUBLIC_KEY,
+			cacheTime: 7 * 24 * 60 * 60,
+		};
+	} catch (err) {
+		Logger.error(err, ErrorCodeMap.ERROR_JWT_INIT);
+		config.jwt = {
+			PRIVATE_KEY: '',
+			PUBLIC_KEY: '',
+			cacheTime: 7 * 24 * 60 * 60,
+		};
+	}
 
 	return config;
 };

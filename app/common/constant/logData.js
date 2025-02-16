@@ -2,12 +2,14 @@ const LogInfo = {
 	// 模块（与业务文件夹controller相对应）
 	MODULE_STATIC: 'log.module.static',
 	MODULE_USER: 'log.module.user',
+	MODULE_AUTH: 'log.module.auth',
 
 	// 动作
 	ACTION_INIT: 'log.action.init',
 	ACTION_ADD: 'log.action.add',
 	ACTION_DEL: 'log.action.del',
 	ACTION_MOD: 'log.action.mod',
+	ACTION_LOGIN: 'log.action.login',
 	// query 获取精准兑现 列表、详情
 	ACTION_QUERY: 'log.action.query',
 	//search 进行模糊搜索 关键字/空间范围

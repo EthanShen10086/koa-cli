@@ -11,18 +11,24 @@ const ErrorCodeMap = {
 	ERROR_0x0010: ['0x0010', '请求操作对象已被停用'],
 	ERROR_0x0011: ['0x0011', '请求操作对象已被取消'],
 	ERROR_0x0012: ['0x0012', '请求操作对象已被拒绝'],
-	ERROR_0x0019: ['0x0009', '未获取到授权项'],
+	ERROR_AUTH_ERROR: ['0x0009', '用户未被授权'],
 	ERROR_0x0020: ['0x0010', '已达到授权场景数量上限:'],
 	ERROR_PASSWORD_ILLEGAL: [
 		'0x0100',
 		'密码必须包含大小写字母、数字和特殊字符，且长度为8-20位',
 	],
 	ERROR_USERNAME_ILLEGAL: ['0x0101', '用户名不能为空'],
+	ERROR_PASSWORD_ERROR: ['0x0103', '密码错误'],
+	ERROR_JWT_INIT: ['0x0104', 'JWT初始化错误'],
 	ERROR_DATABASE_INIT: ['0x0200', '数据库连接失败'],
 	ERROR_SQL_ERROR: ['0x0201', 'SQL语句错误'],
 	ERROR_SQL_PARAMS_ILLEGAL: ['0x0202', 'SQL参数传递非法'],
 	ERROR_SQL_OUT_RANGE: ['0x0203', 'SQL获取数据超出容量'],
 	ERROR_ROUTER_INIT: ['0x0300', '路由初始化失败'],
+	ERROR_STATIC_MIDDLEWARE_IMG_RESIZE: ['0x0400', '图片resize中间件处理失败'],
+	ERROR_STATIC_MIDDLEWARE_IMG_READ: ['0x0401', '图片中间件读取处理失败'],
+	ERROR_STATIC_MIDDLEWARE_IMG_WRITE: ['0x0402', '图片中间件写入处理失败'],
+	ERROR_STATIC_MIDDLEWARE_SPA_SUPPORT: ['0x0450', '静态SPA中间件处理失败'],
 };
 
 module.exports = ErrorCodeMap;
