@@ -3,6 +3,7 @@ const LogInfo = {
 	MODULE_STATIC: 'log.module.static',
 	MODULE_USER: 'log.module.user',
 	MODULE_AUTH: 'log.module.auth',
+	MODULE_FILE: 'log.module.file',
 
 	// 动作
 	ACTION_INIT: 'log.action.init',

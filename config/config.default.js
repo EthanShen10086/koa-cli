@@ -45,14 +45,7 @@ module.exports = (app) => {
 			__dirname,
 			'../app/common/business/upload/img',
 		),
-		businessOutputFile: path.resolve(
-			__dirname,
-			'../app/common/business/output/file',
-		),
-		businessOutputImg: path.resolve(
-			__dirname,
-			'../app/common/business/output/img',
-		),
+		businessOutput: path.resolve(__dirname, '../app/common/business/output'),
 	};
 	if (app) {
 		// cookie安全字符串
