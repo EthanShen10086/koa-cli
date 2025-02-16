@@ -46,7 +46,8 @@ class UserService extends BaseService {
 			throw new BusinessError(ErrorCodeMap.ERROR_SQL_ERROR);
 		}
 	}
-	async findByUsername(userName) {
+	// 内部使用
+	async _findByUsername(userName) {
 		try {
 			const sql = `
             SELECT *
@@ -54,7 +55,7 @@ class UserService extends BaseService {
             WHERE userName = ?`;
 			const [res] = await connection.execute(sql, [userName]);
 			// userName是唯一的 所以直接用res[0] 多个结果需要map
-			return res.length > 0 ? filterSensitiveFields(res[0]) : res;
+			return res.length > 0 ? res[0] : res;
 		} catch (e) {
 			console.error(e);
 			throw new BusinessError(ErrorCodeMap.ERROR_SQL_ERROR);

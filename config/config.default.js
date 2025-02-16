@@ -81,34 +81,40 @@ module.exports = (app) => {
 
 	// 密钥配置;
 	try {
-		const keysDir = path.resolve(__dirname, './keys');
-		// 确保密钥目录存在
-		if (!fs.existsSync(keysDir)) {
-			fs.mkdirSync(keysDir, { recursive: true });
-		}
+		// const keysDir = path.resolve(__dirname, './keys');
+		// // 确保密钥目录存在
+		// if (!fs.existsSync(keysDir)) {
+		// 	fs.mkdirSync(keysDir, { recursive: true });
+		// }
 
-		const privateKeyPath = path.join(keysDir, 'private.key');
-		const publicKeyPath = path.join(keysDir, 'public.key');
+		// const privateKeyPath = path.join(keysDir, 'private.key');
+		// const publicKeyPath = path.join(keysDir, 'public.key');
 
-		// 如果任一密钥文件不存在则生成新密钥对
-		if (!fs.existsSync(privateKeyPath) || !fs.existsSync(publicKeyPath)) {
-			const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
-				modulusLength: 1024,
-				publicKeyEncoding: {
-					type: 'spki',
-					format: 'pem',
-				},
-				privateKeyEncoding: {
-					type: 'pkcs8',
-					format: 'pem',
-				},
-			});
-			fs.writeFileSync(privateKeyPath, privateKey);
-			fs.writeFileSync(publicKeyPath, publicKey);
-		}
+		// // 如果任一密钥文件不存在则生成新密钥对
+		// if (!fs.existsSync(privateKeyPath) || !fs.existsSync(publicKeyPath)) {
+		// 	const { privateKey, publicKey } = crypto.generateKeyPairSync('rsa', {
+		// 		modulusLength: 2048,
+		// 		publicKeyEncoding: {
+		// 			type: 'spki',
+		// 			format: 'pem',
+		// 		},
+		// 		privateKeyEncoding: {
+		// 			type: 'pkcs8',
+		// 			format: 'pem',
+		// 		},
+		// 	});
+		// 	fs.writeFileSync(privateKeyPath, privateKey);
+		// 	fs.writeFileSync(publicKeyPath, publicKey);
+		// }
 
-		const PRIVATE_KEY = fs.readFileSync(privateKeyPath);
-		const PUBLIC_KEY = fs.readFileSync(publicKeyPath);
+		// const PRIVATE_KEY = fs.readFileSync(privateKeyPath);
+		// const PUBLIC_KEY = fs.readFileSync(publicKeyPath);
+		const PRIVATE_KEY = fs.readFileSync(
+			path.resolve(__dirname, './keys/private.key'),
+		);
+		const PUBLIC_KEY = fs.readFileSync(
+			path.resolve(__dirname, './keys/public.key'),
+		);
 		config.jwt = {
 			PRIVATE_KEY,
 			PUBLIC_KEY,

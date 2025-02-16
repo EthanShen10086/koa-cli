@@ -18,7 +18,7 @@ class UserController extends BaseController {
 		const { userName } = params;
 		try {
 			// 2. 判断用户名是否已经存在
-			const user = await this.userService.findByUsername(userName);
+			const user = await this.userService._findByUsername(userName);
 			if (notEmpty(user)) {
 				const res = {
 					code: ErrorCodeMap.ERROR_OBJECT_EXIST[0],
@@ -91,7 +91,7 @@ class UserController extends BaseController {
 		// 使用验证后的值
 		const { id, userName, password, ...rest } = params;
 		try {
-			const user = await this.userService.findByUsername(userName);
+			const user = await this.userService._findByUsername(userName);
 			if (notEmpty(user) && user.id !== id) {
 				const res = {
 					code: ErrorCodeMap.ERROR_OBJECT_EXIST[0],
