@@ -32,8 +32,6 @@ module.exports = (app) => {
 	config.contextPath = '/yyh-app';
 	// 静态资源
 	config.static = {
-		// 7 天
-		cacheTime: 7 * 24 * 60 * 60 * 1000,
 		adminStaticPath: path.resolve(__dirname, '../static/admin'),
 		appStaticPath: path.resolve(__dirname, '../static/app'),
 		webStaticPath: path.resolve(__dirname, '../static/web'),
@@ -46,6 +44,10 @@ module.exports = (app) => {
 			'../app/common/business/upload/img',
 		),
 		outputFile: path.resolve(__dirname, '../public'),
+	};
+	config.staticOption = {
+		// 7 天
+		cacheTime: 7 * 24 * 60 * 60 * 1000,
 	};
 	if (app) {
 		// cookie安全字符串
