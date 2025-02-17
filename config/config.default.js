@@ -43,10 +43,11 @@ module.exports = (app) => {
 			__dirname,
 			'../app/common/business/upload/img',
 		),
+		staticContext: '/yyh-app/index',
+		isStaticBoost: false,
 		outputFile: path.resolve(__dirname, '../public'),
 	};
-	config.staticOption = {
-		// 7 天
+	config.staticOptions = {
 		cacheTime: 7 * 24 * 60 * 60 * 1000,
 	};
 	if (app) {

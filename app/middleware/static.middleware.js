@@ -1,24 +1,24 @@
 const path = require('path');
 const fs = require('fs');
-const koaStatic = require('koa-static');
+// const koaStatic = require('koa-static');
 const Logger = require('../utils/Logger');
-// const mount = require('koa-mount');
+
 const { Jimp } = require('jimp');
 const Multer = require('@koa/multer');
 const ErrorCodeMap = require('../common/constant/errorCode');
+// const { staticOptions } = require('../middleware/boost.middleware');
 const initConfig = require('../../config/config.default');
 const defaultConfig = initConfig();
 const {
-	adminStaticPath,
-	appStaticPath,
-	webStaticPath,
+	// adminStaticPath,
+	// appStaticPath,
+	// webStaticPath,
 	businessUploadFile,
 	businessUploadImg,
 	outputFile,
+	// isStaticBoost,
+	// staticContext,
 } = defaultConfig.static;
-
-const { staticOption } = defaultConfig.static;
-
 const { host, port, commonAPI } = defaultConfig.app;
 
 const fileUpload = Multer({
@@ -101,51 +101,95 @@ const imgResize = async (ctx, next) => {
 	}
 };
 
-const isApp = async (ctx, next) => {
-	const userAgent = ctx.headers['user-agent'];
-	if (/mobile|android| iphone| ipad| app/i.test(userAgent)) {
-		return ctx.isStaticBoost
-			? koaStatic(appStaticPath, staticOption)
-			: koaStatic(appStaticPath);
-	} else {
-		const url = ctx.url;
-		if (url.includes('/admin/')) {
-			return ctx.isStaticBoost
-				? koaStatic(adminStaticPath, staticOption)
-				: koaStatic(adminStaticPath);
-		} else {
-			await next();
-			// 	return ctx.isStaticBoost
-			// 		? koaStatic(webStaticPath, staticOption)
-			// 		: koaStatic(webStaticPath);
-			// }
-		}
-	}
-};
+// const createStaticHandler = (root, opts) => {
+// 	const handler = koaStatic(root, opts);
 
-const spaSupport = async (ctx) => {
-	const url = ctx.url;
-	let objectName = [];
-	const map = {
-		'/app/admin/': adminStaticPath,
-		'/app/app/': appStaticPath,
-		'/app/web/': webStaticPath,
-	};
-	try {
-		for (const key in map) {
-			if (url.includes(key)) {
-				objectName.push(map[key]);
-				const filePath = path.join(map[key], 'index.html');
-				if (fs.existsSync(filePath)) {
-					ctx.type = 'html';
-					ctx.body = fs.createReadStream(filePath);
-				}
-			}
-		}
-	} catch (err) {
-		Logger.error(err, ErrorCodeMap.ERROR_STATIC_MIDDLEWARE_SPA_SUPPORT);
-	}
-};
+// 	return async (ctx, next) => {
+// 		await handler(ctx, async () => {
+// 			// 当静态文件不存在时触发SPA支持
+// 			if (ctx.status === 404) {
+// 				await spaSupport(ctx);
+// 			}
+// 			await next();
+// 		});
+// 	};
+// };
+
+// const isApp = () => {
+// 	return async (ctx, next) => {
+// 		const userAgent = ctx.headers['user-agent'];
+// 		const isMobile = /mobile|android|iphone|ipad/i.test(userAgent);
+
+// 		const handler = isMobile
+// 			? createStaticHandler(appStaticPath, isStaticBoost ? staticOptions : null)
+// 			: ctx.url.startsWith('/admin/')
+// 				? createStaticHandler(
+// 						adminStaticPath,
+// 						isStaticBoost ? staticOptions : null,
+// 					)
+// 				: createStaticHandler(
+// 						webStaticPath,
+// 						isStaticBoost ? staticOptions : null,
+// 					);
+
+// 		await handler(ctx, next);
+// 	};
+// };
+
+// const spaSupport = async (ctx, next) => {
+// 	const url = ctx.url;
+// 	console.log('进来了吗222 spaSupport', url);
+
+// 	const map = {
+// 		// /yyh-app/index/admin/user/1234
+// 		// /yyh-app/index/static/js/chunk-vendors.b86bd72e.js
+// 		[`${staticContext}/admin/`]: adminStaticPath,
+// 		[`${staticContext}/app/`]: appStaticPath,
+// 		[`${staticContext}/web/`]: webStaticPath,
+// 		// /admin/user/1234
+// 		// ['/admin/']: adminStaticPath,
+// 		// ['/app/']: appStaticPath,
+// 		// ['/web/']: webStaticPath,
+// 	};
+// 	try {
+// 		for (const key in map) {
+// 			if (url.startsWith(key)) {
+// 				const filePath = path.join(map[key], 'index.html');
+// 				console.log(filePath, '== filePath');
+// 				if (fs.existsSync(filePath)) {
+// 					ctx.type = 'html';
+// 					ctx.body = fs.createReadStream(filePath);
+// 				}
+// 			}
+// 		}
+// 		await next();
+// 	} catch (err) {
+// 		Logger.error(err, ErrorCodeMap.ERROR_STATIC_MIDDLEWARE_SPA_SUPPORT);
+// 	}
+// };
+
+// const isApp = async (ctx, next) => {
+// 	const userAgent = ctx.headers['user-agent'];
+// 	// Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36
+// 	await next()
+// 	if (/mobile|android| iphone| ipad/i.test(userAgent)) {
+// 		return isStaticBoost
+// 			? koaStatic(appStaticPath, staticOptions)
+// 			: koaStatic(appStaticPath);
+// 	} else {
+// 		const url = ctx.url;
+// 		if (url.startsWith('/admin/')) {
+// 			console.log(adminStaticPath, '==adminStaticPath ')
+// 			return isStaticBoost
+// 				? koaStatic(adminStaticPath, staticOptions)
+// 				: koaStatic(adminStaticPath);
+// 		} else {
+// 			return isStaticBoost
+// 				? koaStatic(webStaticPath, staticOptions)
+// 				: koaStatic(webStaticPath);
+// 		}
+// 	}
+// };
 
 // 工具函数
 // 上传到云存储之后可以删除掉upload和output图片
@@ -158,10 +202,10 @@ function deleteImg(...args) {
 }
 
 module.exports = {
-	isApp,
-	spaSupport,
 	imgResize,
 	imgHandler,
+	// isApp,
+	// spaSupport,
 	// imgAutoResize,
 	fileHandler,
 };

@@ -1,17 +1,15 @@
-const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
+const initConfig = require('../../config/config.default');
+const defaultConfig = initConfig();
 
-const config = require(path.join(__dirname, '../../config/config.default'));
+const { cacheTime } = defaultConfig.staticOptions;
 // 静态资源缓存
 const staticOptions = {
-	maxage: config.staticOptions.cacheTime,
+	maxage: cacheTime,
 	setHeader: (res, filePath) => {
 		// 强缓存
-		res.setHeader(
-			'Cache-Control',
-			`public, max-age=${config.staticOptions.cacheTime}`,
-		);
+		res.setHeader('Cache-Control', `public, max-age=${cacheTime}`);
 		// 协商缓存
 		// 使用Last Modified
 		const stats = fs.statSync(filePath);

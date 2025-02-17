@@ -2,6 +2,7 @@
 TODOs.md
 *.backup.js
 *.key
+static/
 
 # Logs
 logs
